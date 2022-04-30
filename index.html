@@ -16,6 +16,62 @@
             <input type="text" id="fname" name="fname"><br><br>
             <input type="submit" value="Submit">
         </form>
+        <p id="candidate"></p>
     </main>
+
+    <script>
+        //Initialize Web3
+        if (typeof web3 !== 'undefined') {
+            // Use Mist/MetaMask's provider
+            web3js = new Web3(web3.currentProvider);
+        } else {
+            web3js = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
+        }
+
+        //Set Account- get access to first account that is provided by Metamask
+        web3.eth.defaultAccount = web3.eth.accounts[0];
+
+        //set contract ABI
+        var contractAbi = [
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "_name",
+                        "type": "string"
+                    }
+                ],
+                "name": "setCandidate",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "stateMutability": "nonpayable",
+                "type": "constructor"
+            },
+            {
+                "inputs": [],
+                "name": "candidateName",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ]
+
+        //Set contract Address
+        var contractAddress;
+
+        //Set the Contract
+        web3.eth.contract(contractAbi).at(contractAddress);
+
+    </script>
 </body>
 </html>
