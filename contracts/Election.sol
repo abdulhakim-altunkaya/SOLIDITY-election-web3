@@ -4,9 +4,9 @@ pragma solidity >=0.8.7;
 
 contract Election {
     string public candidateName;
-    
-    constructor() {
-        candidateName = "Candidate 1";
+
+    constructor(){
+        candidateName = "Harro";
     }
 
     function setCandidate(string memory _name) public {

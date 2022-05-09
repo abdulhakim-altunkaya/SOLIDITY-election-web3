@@ -1,0 +1,11 @@
+1) create a simple web server with express and serve an index.html
+2) by using a button, detect a metamask and get the address number and display address in a paragraph
+
+3) truffle init
+4) add a simple contract inside contracts folder
+
+5) launch ganache
+6) then go to remix and copy-paste your contract.
+For environment, choose: web3provider
+You will need last 4 digits of RPC server of your ganache, and paste it to remix web3provider popup end point.
+7)
