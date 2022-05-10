@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World Metamask App</title>
+    <link href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
+</head>
+<body  class="flex-col w-screen h-screen justify-center items-center">
+    <button 
+        id="loginButton"
+        class="rounded-md bg-purple-500 p-2 text-white" >Login with Metamask</button>
+    <button 
+        id="logoutButton"
+        class="rounded-md bg-purple-500 p-2 text-white" >Logout from Metamask</button>
+    <button 
+        id="getData"
+        class="rounded-md bg-purple-500 p-2 text-white" onclick="getData()">Get Data from Smart Contract</button>
+    <p id="showAccount"></p>
+    <p id="showData"></p>
+
+    <script>
+    async function loadweb3(){
+        if(window.ethereum){
+            window.web3=new Web3(window.ethereum);
+            window.ethereum.enable(); 
+        } 
+    }        
+       
+     async function loadContract(){
+          //ABI & address of owner who deployed it on metamask network in RemixIDE
+        var ABI = [
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "_name",
+                        "type": "string"
+                    }
+                ],
+                "name": "setCandidate",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "stateMutability": "nonpayable",
+                "type": "constructor"
+            },
+            {
+                "inputs": [],
+                "name": "candidateName",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ]
+        var Address = '0x34aE3AB8502B738b9d5A8f71634a24FeC6B5b34a';
+        return await new window.web3.eth.Contract( ABI, Address); 
+      } 
+      
+        
+      async function load(){
+            await loadweb3();
+         window.contract = await loadContract();
+        }
+         
+      
+    load();
+
+    async function getData( ){
+        //Here we call the smart contract method that we defined earlier methodTwo( )
+        const amtB = await window.contract.methods.candidateName( ).call();  
+        await console.log(amtB);              
+    }
+/*
+        let account;
+        const loadEvent = async () => { 
+            alert("page is ready");
+        }
+
+        const login  = async () => {
+            if (typeof window.ethereum !== 'undefined') {
+                const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                account = accounts[0];
+                document.getElementById("showAccount").innerHTML = account;
+            } else {
+                alert("metamask is not installed");
+                document.getElementById("loginButton").style.cursor = "not-allowed";
+            }
+        }
+
+        const logout = () => {
+            account = 0;
+            document.getElementById("showAccount").innerHTML = "For logout, logout from the metamask please";
+        }
+
+        const getData = async () => {
+            let contractABI = [
+                {
+                    "inputs": [
+                        {
+                            "internalType": "string",
+                            "name": "_name",
+                            "type": "string"
+                        }
+                    ],
+                    "name": "setCandidate",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "constructor"
+                },
+                {
+                    "inputs": [],
+                    "name": "candidateName",
+                    "outputs": [
+                        {
+                            "internalType": "string",
+                            "name": "",
+                            "type": "string"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                }
+            ];
+            let contractAddress = '0x78bE5218179547533677591985847De1c9a04B76';
+            const contract  = new web3.eth.Contract(contractABI, contractAddress);
+            console.log("connection establieshed");
+        }
+
+/*
+
+async function loadWeb3() {
+    if (window.ethereum) {
+        window.web3 = new Web3(window.ethereum);
+        window.ethereum.enable();
+    }
+}
+
+async function load() {
+    await loadWeb3();
+    updateStatus('Ready!');
+}
+
+function updateStatus(status) {
+    const statusEl = document.getElementById('status');
+    statusEl.innerHTML = status;
+    console.log(status);
+}
+
+load();
+
+
+
+var Contract = require('web3-eth-contract');
+
+// set provider for all later instances to use
+Contract.setProvider('ws://localhost:8546');
+
+var contract = new Contract(jsonInterface, address);
+
+contract.methods.somFunc().send({from: ....})
+.on('receipt', function(){
+    ...
+});
+
+        // Source code to interact with smart contract
+
+// web3 provider with fallback for old version
+window.addEventListener('load', async () => {
+  // New web3 provider
+  if (window.ethereum) {
+      window.web3 = new Web3(ethereum);
+      try {
+          // ask user for permission
+          await ethereum.enable();
+          // user approved permission
+      } catch (error) {
+          // user rejected permission
+          console.log('user rejected permission');
+      }
+  }
+  // Old web3 provider
+  else if (window.web3) {
+      window.web3 = new Web3(web3.currentProvider);
+      // no need to ask for permission
+  }
+  // No web3 provider
+  else {
+      console.log('No web3 provider detected');
+  }
+});
+console.log (window.web3.currentProvider)
+
+// contractAddress and abi are setted after contract deploy
+const contractAddress = '0x7eB8a1A0ce02bb5850b3C6cbC498e4D3bDcEeeb0';
+const abi =
+//contract instance
+const contract = new web3.eth.Contract(abi, contractAddress);
+
+function registerGetInfo() {
+  contract.methods.candidateName().call().then( function( info ) {
+    console.log("info: ", info);
+    document.getElementById('lastInfo').innerHTML = info;
+  });
+}
+*/
+    </script>
+</body>
+</html>
