@@ -25,11 +25,13 @@
     async function loadweb3(){
         if(window.ethereum){
             window.web3=new Web3(window.ethereum);
-            window.ethereum.enable(); 
+            const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+            account = accounts[0];
+            document.getElementById("showAccount").innerHTML = account;
         } 
     }        
        
-     async function loadContract(){
+    async function loadContract(){
           //ABI & address of owner who deployed it on metamask network in RemixIDE
         var ABI = [
             {
@@ -64,7 +66,7 @@
                 "type": "function"
             }
         ]
-        var Address = '0x34aE3AB8502B738b9d5A8f71634a24FeC6B5b34a';
+        var Address = '0x1bf04b2ce9EB9c7Ea778a30a6C14F4DD110137Af';
         return await new window.web3.eth.Contract( ABI, Address); 
       } 
       
